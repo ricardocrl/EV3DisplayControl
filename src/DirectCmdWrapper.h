@@ -8,8 +8,10 @@
 #ifndef DIRECTCMDWRAPPER_H_
 #define DIRECTCMDWRAPPER_H_
 
-#include <unordered_map>
+#include "Logging.h"
 #include "DirectCmdReply.h"
+
+#include <unordered_map>
 
 enum class Output : unsigned char {
     A = 0x01,

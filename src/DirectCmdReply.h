@@ -8,9 +8,10 @@
 #ifndef DIRECTCMDREPLY_H_
 #define DIRECTCMDREPLY_H_
 
+#include "Logging.h"
+
 #include <vector>
 #include <cstddef>
-#include <iostream>
 #include <cstring>
 
 class DirectCmdReply {
@@ -25,7 +26,7 @@ public:
             if (idx < values.size() && sizeof(T) <= values[idx].size()) {
                 memcpy(&ret, values[idx].data(), sizeof(T));
             } else {
-                std::cout << "Reply values are not compatible with the request" << std::endl;
+                LOG("Reply values are not compatible with the request");
             }
         }
         return ret;

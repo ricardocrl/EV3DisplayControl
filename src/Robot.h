@@ -8,12 +8,15 @@
 #ifndef ROBOT_H_
 #define ROBOT_H_
 
+#include "Logging.h"
+#include "DirectCmdWrapper.h"
+
 #include <queue>
 #include <mutex>
 #include <atomic>
 #include <thread>
 #include <functional>
-#include "DirectCmdWrapper.h"
+
 
 class Robot : public DirectCmdWrapper {
 public:

@@ -1,8 +1,11 @@
-// wxWidgets "Hello world" Program
-// For compilers that support precompilation, includes "wx/wx.h".
+/*
+ * app.cpp
+ *
+ *  Created on: 25/09/2017
+ *      Author: roliveira
+ */
 
-#include "app.h"
-
+#include "App.h"
 #include "CamWindow.h"
 
 wxDEFINE_EVENT(EVT_REFRESH, wxThreadEvent);
@@ -10,7 +13,7 @@ wxDEFINE_EVENT(EVT_REFRESH, wxThreadEvent);
 wxIMPLEMENT_APP(MyApp);
 bool MyApp::OnInit()
 {
-    MyFrame *frame = new MyFrame( "EV3 Robot - Remote Touch Control", wxPoint(50, 50), wxSize(450, 340) );
+    MyFrame *frame = new MyFrame( "EV3DisplayControl", wxPoint(50, 50), wxSize(450, 340) );
     frame->Show( true );
     return true;
 }
@@ -25,9 +28,6 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
         : wxFrame(NULL, wxID_ANY, title, pos, size), camWindow(NULL)
 {
     wxMenu *menuFile = new wxMenu;
-    menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",
-                     "Help string shown in status bar for this menu item");
-    menuFile->AppendSeparator();
     menuFile->Append(wxID_EXIT);
     wxMenu *menuHelp = new wxMenu;
     menuHelp->Append(wxID_ABOUT);
@@ -36,7 +36,7 @@ MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
     menuBar->Append( menuHelp, "&Help" );
     SetMenuBar( menuBar );
     CreateStatusBar();
-    SetStatusText( "Welcome to wxWidgets!" );
+    SetStatusText( "Select 4 points to define the LCD area, then the control is yours. Right-click to reset" );
 
     m_pMainPanel = new wxPanel(this, -1, wxPoint(0,0), size, 0 );
 
@@ -59,19 +59,18 @@ void MyFrame::OnExit(wxCommandEvent& event)
 }
 void MyFrame::OnAbout(wxCommandEvent& event)
 {
-    wxMessageBox( "This is a wxWidgets' Hello world sample",
-                  "About Hello World", wxOK | wxICON_INFORMATION );
+    wxMessageBox( "EV3DispalyControl allows you to perform actions on a touch screen.\n\
+Built for an Automotive client with test benches with rails above the test screen. It\n\
+was meant for automation and possible off-site remote control with further development.",
+				  "About EV3DisplayControl", wxOK | wxICON_INFORMATION );
 }
 
 void MyFrame::OnSize(wxSizeEvent& event)
 {
-    std::cout << "CCamView::OnSize" << std::endl;
-
     if (camWindow) {
         camWindow->updateSize(GetClientSize());
     }
 
     event.Skip();
-    std::cout << "CCamView::OnSize end" << std::endl;
 }
 

@@ -49,7 +49,7 @@ void CamWindow::updateSize(const wxSize & newSize) {
 
 void CamWindow::OnTriggerFrame(wxTimerEvent& event) {
     auto pos = wxGetMousePosition() - GetScreenPosition();
-    camera.setMousePosition({pos.x, pos.y});
+    camera.updateMousePosition({pos.x, pos.y});
 
     if (camera.captureFrame()) {
         Refresh();
@@ -70,18 +70,22 @@ void CamWindow::OnPaint(wxPaintEvent &event)
     }
 }
 
+wxPoint CamWindow::windowToScreenPosition(const wxPoint& windowPos) {
+    float xPercent = (float)windowPos.x / GetClientSize().x;
+    float yPercent = (float)windowPos.y / GetClientSize().y;
+    int screenX = screenOffset.first + (xPercent * screenSize.first);
+    int screenY = screenOffset.second + (yPercent * screenSize.second);
+    return wxPoint(screenX, screenY);
+}
+
 void CamWindow::OnLeftDown(wxMouseEvent& event)
 {
-    std::cout << "Left click: " << event.GetX() << "," << event.GetY() << std::endl;
+    LOG("Left click: " << event.GetX() << "," << event.GetY());
     if (camera.hasPerspective()) {
-        // send control to robot
-        float xPercent = (float)event.GetPosition().x / GetClientSize().x;
-        float yPercent = (float)event.GetPosition().y / GetClientSize().y;
-        int robotX = screenOffset.first + (xPercent * screenSize.first);
-        int robotY = screenOffset.second + (yPercent * screenSize.second);
-        std::cout << "mouse x,y percent: "<< xPercent << ", "<< yPercent << std::endl;
 
-        robot.clickXY(robotX, robotY);
+    	wxPoint screenPos = windowToScreenPosition(event.GetPosition());
+        robot.clickXY(screenPos.x, screenPos.y);
+
     } else {
         camera.pushPerspectiveInputPts({event.GetPosition().x, event.GetPosition().y});
     }
@@ -90,7 +94,7 @@ void CamWindow::OnLeftDown(wxMouseEvent& event)
 
 void CamWindow::OnRightDown(wxMouseEvent& event)
 {
-    std::cout << "Right click: " << std::endl;
+    LOG("Right click: ");
     camera.resetPerspective();
     event.Skip();
 }
@@ -98,7 +102,7 @@ void CamWindow::OnRightDown(wxMouseEvent& event)
 bool CamWindow::parseConfigFile() {
     std::ifstream is_file(configFile, std::ios::in);
     if (!is_file.is_open()) {
-        std::cout << "Failed to open config file: " << configFile << std::endl;
+        LOG("Failed to open config file: " << configFile);
         return false;
     }
 
@@ -142,10 +146,11 @@ bool CamWindow::parseConfigFile() {
             }
         }
     }
-    std::cout << "Configuration:" << std::endl;
-    std::cout << " > Robot arm length = " << robot.getArmLengthMm() << std::endl;
-    std::cout << " > Screen offset = (" << screenOffset.first << ", " << screenOffset.second << ")" << std::endl;
-    std::cout << " > Screen size = (" << screenSize.first << ", " << screenSize.second << ")" << std::endl;
+    LOG("Configuration:");
+    LOG(" > Robot arm length = " << robot.getArmLengthMm());
+    LOG(" > Screen offset = (" << screenOffset.first << ", " << screenOffset.second << ")");
+    LOG(" > Screen size = (" << screenSize.first << ", " << screenSize.second << ")");
+    LOG(" > Robot path = (" << robotPath << ")");
     std::cout << std::endl;
     return true;
 }

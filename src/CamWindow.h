@@ -13,6 +13,7 @@
     #include <wx/wx.h>
 #endif
 
+#include "Logging.h"
 #include "Camera.h"
 #include "Robot.h"
 
@@ -34,6 +35,7 @@ private:
     void    OnRightDown(wxMouseEvent& event);
 
     bool parseConfigFile();
+    wxPoint windowToScreenPosition(const wxPoint& windowPos);
 
     Camera camera;
     Robot robot;

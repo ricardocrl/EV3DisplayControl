@@ -38,7 +38,7 @@ std::string DirectCmdReply::get<std::string>(const unsigned int idx) {
             });
             return std::string(values[idx].begin(), it);
         } else {
-            std::cout << "Reply values are not compatible with the request" << std::endl;
+            LOG("Reply values are not compatible with the request");
         }
     }
     return std::string();

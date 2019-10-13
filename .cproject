@@ -63,11 +63,15 @@
                                     									
                                     <listOptionValue builtIn="false" value="__GXX_EXPERIMENTAL_CXX0X__"/>
                                     									
-                                    <listOptionValue builtIn="false" value="wxUSE_GUI=1"/>
-                                    									
                                     <listOptionValue builtIn="false" value="wxUSE_IMAGE=1"/>
                                     									
                                     <listOptionValue builtIn="false" value="wxUSE_TIMER=1"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="wxUSE_MENUS=1"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__WXGTK20__"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="wxUSE_GUI=1"/>
                                     								
                                 </option>
                                 								
@@ -96,6 +100,10 @@
                                     <listOptionValue builtIn="false" value="wxUSE_IMAGE=1"/>
                                     									
                                     <listOptionValue builtIn="false" value="wxUSE_TIMER=1"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__WXGTK20__"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="wxUSE_MENUS=1"/>
                                     								
                                 </option>
                                 								
@@ -205,11 +213,15 @@
                                     									
                                     <listOptionValue builtIn="false" value="__GXX_EXPERIMENTAL_CXX0X__"/>
                                     									
-                                    <listOptionValue builtIn="false" value="wxUSE_GUI=1"/>
-                                    									
                                     <listOptionValue builtIn="false" value="wxUSE_IMAGE=1"/>
                                     									
                                     <listOptionValue builtIn="false" value="wxUSE_TIMER=1"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="wxUSE_MENUS=1"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__WXGTK20__"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="wxUSE_GUI=1"/>
                                     								
                                 </option>
                                 								
@@ -238,6 +250,10 @@
                                     <listOptionValue builtIn="false" value="wxUSE_IMAGE=1"/>
                                     									
                                     <listOptionValue builtIn="false" value="wxUSE_TIMER=1"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__WXGTK20__"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="wxUSE_MENUS=1"/>
                                     								
                                 </option>
                                 								

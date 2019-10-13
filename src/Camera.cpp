@@ -55,7 +55,6 @@ bool Camera::captureFrame() {
 
 	// Draw selected polygon
 	if ((perspectiveInputPts.size() > 1) && (perspectiveInputPts.size() <= 4)) {
-
 		int vertexCount = perspectiveInputPts.size();
 		const cv::Point * polyPts = perspectiveInputPts.data();
 		cv::fillPoly(frame, &polyPts, &vertexCount, 1, cv::Scalar(255, 255, 255));
@@ -72,16 +71,8 @@ void Camera::pushPerspectiveInputPts(const Camera::Point& pt) {
         perspectiveInputPts.push_back(cv::Point2f(static_cast<float>(pt.x), static_cast<float>(pt.y)));
         updateTransformMtx();
     } else {
-        std::cout << "Camera::pushPerspectiveInputPts" << "number of input points exceeded" << std::endl;
+        LOG("Camera::pushPerspectiveInputPts" << "number of input points exceeded");
     }
-}
-
-void Camera::setPerspectiveInputPts(const std::vector<Camera::Point>& pts) {
-    perspectiveInputPts = std::vector<cv::Point>(1, cv::Point(0,0));
-    for (const auto & pt : pts) {
-        perspectiveInputPts.push_back(cv::Point2f(static_cast<float>(pt.x), static_cast<float>(pt.y)));
-    }
-    updateTransformMtx();
 }
 
 void Camera::setOutputSize(const Camera::Size& outSize) {
@@ -99,12 +90,12 @@ void Camera::resetPerspective() {
     perspectiveInputPts = std::vector<cv::Point>(1, cv::Point(0,0));
 }
 
-void Camera::setMousePosition(const Camera::Point& pos) {
-    perspectiveInputPts[0] = cv::Point(pos.x, pos.y);
+void Camera::updateMousePosition(const Camera::Point& pos) {
+	perspectiveInputPts[0] = cv::Point(pos.x, pos.y);
 }
 
 void Camera::updateTransformMtx() {
-    // 1 of the elements in perspectiveInputPts is the mouse position on the 0th idx
+    // 1 of the elements in perspectiveInputPts is the mouse position on the 0th idx, for drawing purposes.
     if ((perspectiveInputPts.size() == 5) && (perspectiveOutputPts.size() == 4)) {
 
         std::vector<cv::Point2f> inputToMtx(std::next(perspectiveInputPts.begin()), perspectiveInputPts.end());

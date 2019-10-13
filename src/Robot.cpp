@@ -26,7 +26,7 @@ Robot::Robot() :
 Robot::~Robot() {
     //goHome();
 	if (isOpen()) {
-		std::cout << "Stopping motors..." << std::endl;
+		LOG("Stopping motors...");
 		outputStop(outX, StopLevel::FLOAT);
 		outputStop(outArm, StopLevel::FLOAT);
 		close();
@@ -55,7 +55,7 @@ bool Robot::isConnected() {
 
 bool Robot::goHome() {
     if (!isConnected()) {
-        std::cout << "Robot::goHome error - robot not connected" << std::endl;
+        LOG("Robot::goHome error - robot not connected");
         return false;
     }
 
@@ -70,16 +70,16 @@ bool Robot::goHome() {
 
     while (!armHome || !xHome) {
         usleep(10000);
-        std::cout << "arm speed: " << getSpeed(outArm) << std::endl;
-        std::cout << "touch x: " << getTouch(inTouch) << std::endl;
+        LOG("arm speed: " << getSpeed(outArm));
+        LOG("touch x: " << getTouch(inTouch));
 
         if (!armHome) {
             armHome = (getSpeed(outArm) <= 1);
             if (armHome) {
                 outputStop(outArm, StopLevel::BRAKE);
-                std::cout << "tacho before adjust: " << getTacho(outArm) << std::endl;
+                LOG("tacho before adjust: " << getTacho(outArm));
                 outputPowerStep(outArm, 5, 28*outArmPolarity, StopLevel::BRAKE);
-                std::cout << "tacho after adjust: " << getTacho(outArm) << std::endl;
+                LOG("tacho after adjust: " << getTacho(outArm));
             }
         }
 
@@ -95,7 +95,6 @@ bool Robot::goHome() {
     outputReset(outX);
 
     driveTo({0, 0});
-    clickXY(0, 0);
     return true;
 }
 
@@ -114,15 +113,15 @@ int Robot::getTachoDiff(const Output output, const int targetTacho) {
     } else if (output == outX) {
         return (targetTacho)*outXPolarity - getTacho(outX);
     } else {
-        std::cout << "Robot::getTicksDistance Output not implemented" << std::endl;
+        LOG("Robot::getTicksDistance Output not implemented");
         return 0;
     }
 }
 
 int Robot::chooseCandidate(const std::vector<std::pair<int, int>> candidates) {
-    std::cout << "candidates:" << std::endl;
+    LOG("candidates:");
     for (auto const cand : candidates) {
-        std::cout << cand.first << ", " << cand.second << std::endl;
+        LOG(cand.first << ", " << cand.second);
     }
     if (candidates.empty() || candidates.size() > 2) {
         return -1;
@@ -172,30 +171,30 @@ int Robot::chooseCandidate(const std::vector<std::pair<int, int>> candidates) {
 }
 
 bool Robot::driveTo(std::pair<int, int> motorsTargetPos) {
-    std::cout << "Robot::driveTo " << motorsTargetPos.first << ", " << motorsTargetPos.second << std::endl;
+    LOG("Robot::driveTo " << motorsTargetPos.first << ", " << motorsTargetPos.second);
     std::cout << "Robot::driveTo Dist: " << getTachoDiff(outX, motorsTargetPos.first) << ", "
             << getTachoDiff(outArm, motorsTargetPos.second) << std::endl;
     int steps = getTachoDiff(outX, motorsTargetPos.first);
     if (steps != 0) {
-        std::cout << "Driving X steps: " << steps << std::endl;
-        std::cout << "Robot::driveTo tacho x: " << getTacho(outX) << std::endl;
+        LOG("Driving X steps: " << steps);
+        LOG("Robot::driveTo tacho x: " << getTacho(outX));
         outputSpeedStep(outX, outXSpeed, steps, StopLevel::BRAKE_AND_FLOAT, Layer::L0, false);
     }
     steps = getTachoDiff(outArm, motorsTargetPos.second);
     if (steps != 0) {
-        std::cout << "Driving Arm steps: " << steps << std::endl;
-        std::cout << "Robot::driveTo tacho arm: " << getTacho(outArm) << std::endl;
+        LOG("Driving Arm steps: " << steps);
+        LOG("Robot::driveTo tacho arm: " << getTacho(outArm));
         outputSpeedStep(outArm, outArmSpeed, steps, StopLevel::BRAKE, Layer::L0, false);
     }
     while(!outputReady(outX) || !outputReady(outArm)) {
         usleep(5000);
     }
-    std::cout << "Robot::driveTo tacho arm: " << getTacho(outArm) << std::endl;
+    LOG("Robot::driveTo tacho arm: " << getTacho(outArm));
     return true;
 }
 
 bool Robot::goTo(const int x, const int y) {
-    std::cout << "Robot::goTo " << x << ", " << y << std::endl;
+    LOG("Robot::goTo " << x << ", " << y);
     float const & edgeHypothenuse = armLength_mm;
     float edgeAdjacent = y - armOffset_mm.second;
 
@@ -206,10 +205,10 @@ bool Robot::goTo(const int x, const int y) {
 
     float edgeOpposite = sqrt(pow(edgeHypothenuse, 2) - pow(edgeAdjacent, 2));
 
-    std::cout << "Triang (h,o,a):" << edgeHypothenuse << " " << edgeOpposite << " " << edgeAdjacent << std::endl;
+    LOG("Triang (h,o,a):" << edgeHypothenuse << " " << edgeOpposite << " " << edgeAdjacent);
     float angle = asin((edgeOpposite) / edgeHypothenuse);
     float angle_d = (angle / (2 * PI)) * 360;
-    std::cout << "Angle degrees: " << angle_d << std::endl;
+    LOG("Angle degrees: " << angle_d);
 
     // 2 pairs <tachoCount_outX, tachoCount_outArm>
     std::vector<std::pair<int, int>> candidateMotorsPos(2);

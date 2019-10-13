@@ -46,16 +46,16 @@ bool DirectCmdWrapper::open() {
 bool DirectCmdWrapper::open(const std::string & path) {
     int newFd = ::open(path.data(), O_RDWR | O_SYNC | O_NOCTTY);
     if (newFd > 0) {
-        std::cout << "DirectCmdWrapper::open success " << path << ": " << newFd << std::endl;
+        LOG("DirectCmdWrapper::open success " << path << ": " << newFd);
         // if success, close previous connection
         if (fd > 0) {
             if (::close(fd) != 0) {
-                std::cout << "DirectCmdWrapper::open could not close previous fd: " << fd << std::endl;
+                LOG("DirectCmdWrapper::open could not close previous fd: " << fd);
             }
         }
         fd = newFd;
     } else {
-        std::cout << "DirectCmdWrapper::open error " << path << ": " << newFd << std::endl;
+        LOG("DirectCmdWrapper::open error " << path << ": " << newFd);
     }
     return isOpen();
 }
@@ -238,7 +238,7 @@ DirectCmdReply DirectCmdWrapper::sendDirectCmd(unsigned char opcode, const std::
         size_t readSizeActual = read(fd, rsp, readSizeExpected);
 
         if (readSizeActual != readSizeExpected) {
-            std::cout << "Error reading msg" << std::endl;
+            LOG("Error reading msg");
         } else {
             reply = DirectCmdReply(rsp, readSizeActual, returnSizes);
         }
@@ -380,7 +380,7 @@ void DirectCmdWrapper::testInputDevice(Output output) {
     for (int port = 0; port < 30; ++port) {
         DirectCmdReply reply = sendDirectCmd(opINPUT_DEVICE, {GET_NAME, 0, port, 16}, {16});
         if (reply.isOk() && reply.get<std::string>(0) != "NONE") {
-            std::cout << "Port " << port << ": " << reply.get<std::string>(0) << std::endl;
+            LOG("Port " << port << ": " << reply.get<std::string>(0));
             for (int mode = 0; mode < 30; mode++) {
                 reply = sendDirectCmd(opINPUT_DEVICE, {GET_MODENAME, 0, port, mode, 16}, {16});
                 auto modeName = reply.get<std::string>(0);
@@ -389,7 +389,7 @@ void DirectCmdWrapper::testInputDevice(Output output) {
                     int val;
                     if (reply.isOk()) {
                         val = reply.get<int>(0);
-                        std::cout << "Mode " << mode << ": " << modeName << " - current val: " << val << std::endl;
+                        LOG("Mode " << mode << ": " << modeName << " - current val: " << val);
                     }
                 }
             }

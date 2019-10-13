@@ -14,6 +14,7 @@
   #include "wx/wx.h"
 #endif //precompiled headers
 
+#include "Logging.h"
 #include <opencv2/videoio.hpp>
 
 //////////////////////////////////////////////////
@@ -44,9 +45,8 @@ public:
 
     bool hasPerspective();
     void pushPerspectiveInputPts(const Camera::Point& pt);
-    void setPerspectiveInputPts(const std::vector<Camera::Point>& pts);
     void resetPerspective();
-    void setMousePosition(const Camera::Point& pos);
+    void updateMousePosition(const Camera::Point& pos);
 
     void setOutputSize(const Camera::Size& size);
 

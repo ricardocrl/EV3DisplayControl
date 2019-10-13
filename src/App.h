@@ -1,5 +1,5 @@
 /*
- * wxMyHelloworld.h
+ * app.h
  *
  *  Created on: 25/09/2017
  *      Author: roliveira
@@ -36,10 +36,5 @@ private:
 
     wxDECLARE_EVENT_TABLE();
 };
-enum
-{
-    ID_Hello = 1
-};
-
 
 #endif /* APP_H_ */
