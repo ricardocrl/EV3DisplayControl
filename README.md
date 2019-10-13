@@ -1,2 +1,2 @@
 # ev3robot-remotetouchcontrol
-Use a wxWidgets GUI with a camera input to convert mouse-clicks interaction into touch screen remote, executed by an EV3 robot.
+EV3 project to ridirected mouse clicks on a video stream to a remotely controlled touch screen using an EV3 robot.
