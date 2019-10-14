@@ -1,5 +1,5 @@
 # EV3DisplayControl
-V3DispalyControl allows you to perform actions on a touch screen.
+EV3DispalyControl allows you to perform actions on a touch screen.
 
 # Goal
 Originally built for remote control of an Automotive test rack with an HMI touch screen.
