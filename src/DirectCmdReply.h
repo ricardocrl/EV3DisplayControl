@@ -13,6 +13,7 @@
 #include <vector>
 #include <cstddef>
 #include <cstring>
+#include <string>
 
 class DirectCmdReply {
 public:

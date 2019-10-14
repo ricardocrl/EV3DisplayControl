@@ -5,7 +5,6 @@
  *      Author: roliveira
  */
 
-#include <iostream>
 #include <unistd.h>
 #include <cmath>
 #include <algorithm>
@@ -172,8 +171,8 @@ int Robot::chooseCandidate(const std::vector<std::pair<int, int>> candidates) {
 
 bool Robot::driveTo(std::pair<int, int> motorsTargetPos) {
     LOG("Robot::driveTo " << motorsTargetPos.first << ", " << motorsTargetPos.second);
-    std::cout << "Robot::driveTo Dist: " << getTachoDiff(outX, motorsTargetPos.first) << ", "
-            << getTachoDiff(outArm, motorsTargetPos.second) << std::endl;
+    LOG("Robot::driveTo Dist: " << getTachoDiff(outX, motorsTargetPos.first) << ", "\
+            << getTachoDiff(outArm, motorsTargetPos.second));
     int steps = getTachoDiff(outX, motorsTargetPos.first);
     if (steps != 0) {
         LOG("Driving X steps: " << steps);

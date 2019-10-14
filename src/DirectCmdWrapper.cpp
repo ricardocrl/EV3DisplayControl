@@ -172,8 +172,8 @@ int DirectCmdWrapper::getSpeed(const Output output, const Layer layer) {
     if (reply.isOk()) {
         return static_cast<int>(reply.get<char>(0));
     } else {
-        std::cout << "DirectCmdWrapper::getSpeed error - output: " << static_cast<int>(output) << " layer: "
-                << static_cast<int>(layer) << std::endl;
+        LOG("DirectCmdWrapper::getSpeed error - output: " << static_cast<int>(output) << " layer: "\
+                << static_cast<int>(layer));
         return 0;
     }
 }
@@ -183,8 +183,8 @@ int DirectCmdWrapper::getTacho(const Output output, const Layer layer) {
     if (reply.isOk()) {
         return reply.get<int>(0);
     } else {
-        std::cout << "DirectCmdWrapper::getTacho error" << " output: " << static_cast<int>(output) << " layer: "
-                << static_cast<int>(layer) << std::endl;
+        LOG("DirectCmdWrapper::getTacho error" << " output: " << static_cast<int>(output) << " layer: "\
+                << static_cast<int>(layer));
         return 0;
     }
 }
@@ -198,8 +198,8 @@ unsigned char DirectCmdWrapper::readSensorPercent(const Input input, const Layer
     if (reply.isOk()) {
         return reply.get<unsigned char>(0);
     } else {
-        std::cout << "DirectCmdWrapper::readSensorPercent error" << " input: " << static_cast<int>(input) << " layer: "
-                << static_cast<int>(layer) << std::endl;
+    	LOG("DirectCmdWrapper::readSensorPercent error" << " input: " << static_cast<int>(input) << " layer: "\
+                << static_cast<int>(layer));
         return 0;
     }
 }
@@ -208,8 +208,8 @@ bool DirectCmdWrapper::playTone(const unsigned char volume, const unsigned int t
         bool waitCompletion) {
     if(!sendDirectCmd(opSOUND, { TONE, (int) volume, (int) tone_hz, (int) ms }).isOk()) {
 
-        std::cout << "DirectCmdWrapper::playTone error" << " volume: " << static_cast<int>(volume) << " tone_hz: "
-                << static_cast<int>(tone_hz) << " ms: " << static_cast<int>(ms) << std::endl;
+    	LOG("DirectCmdWrapper::playTone error" << " volume: " << static_cast<int>(volume) << " tone_hz: "\
+                << static_cast<int>(tone_hz) << " ms: " << static_cast<int>(ms));
         return false;
     }
     while (waitCompletion && sendDirectCmd(opSOUND_TEST, {}, {1}).get<bool>(0)) usleep(10000);
@@ -322,8 +322,7 @@ unsigned char DirectCmdWrapper::bitfieldToPortNo(const Output bf) {
         case Output::D:
             return 3;
         default:
-            std::cout << "DirectCmdWrapper::bitfieldToPortNo cannot convert multiple outputs to 1 port no."
-                    << std::endl;
+        	LOG("DirectCmdWrapper::bitfieldToPortNo cannot convert multiple outputs to 1 port no.");
             return ~0;
     }
 }
@@ -393,7 +392,7 @@ void DirectCmdWrapper::testInputDevice(Output output) {
                     }
                 }
             }
-            std::cout << std::endl;
+            LOG("");
         }
         usleep(10000);
     }

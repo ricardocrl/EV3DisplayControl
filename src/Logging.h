@@ -10,9 +10,8 @@
 
 #define LOGGING
 
-#include <iostream>
-
 #ifdef LOGGING
+#include <iostream>
 #define LOG(t) std::cout << t << std::endl;
 #else
 #define LOG(t)
