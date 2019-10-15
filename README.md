@@ -1,3 +1,5 @@
+![Demo](demo/demo.gif)
+
 # EV3DisplayControl
 EV3DispalyControl allows you to perform actions on a touch screen.
 
